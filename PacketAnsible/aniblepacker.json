@@ -1,0 +1,31 @@
+{
+    "builders" :[
+        {
+            "type": "amazon-ebs",
+            "access_key" : "AKIAI7VFEYLGW5EOZMXA", 
+            "secret_key" : "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", 
+            "region": "us-west-2",
+            "source_ami": "ami-c59ce2bd",
+            "instance_type" : "t2.micro",
+            "ami_description" : "Amazing First AMI",
+            "ami_name": "Tomcat-Ansible{{isotime | clean_ami_name}}",
+            "ssh_username": "ubuntu"
+        }
+    ],
+    "provisioners" : [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt-get -y update",
+                "sudo apt-get install software-properties-common",
+                "sudo apt-add-repository ppa:ansible/ansible",
+                "sudo apt-get update",
+                "sudo apt-get install ansible -y"
+            ]
+        },
+        {
+            "type" : "ansible-local",
+            "playbook_file": "apache2.yaml"
+        }
+    ] 
+}
